@@ -13,14 +13,15 @@
  * }
  */
 
-const apiResponse = JSON.stringify([
-    { price: 100 },
-    { price: 200 },
-    {},
-]);
+fetchData().then(composeAPIResponse).then(printOrderTotal);
 
-const order = composeAPIResponse(apiResponse);
-order && printOrderTotal(order);
+function fetchData() {
+    return Promise.resolve(JSON.stringify([
+        { price: 100 },
+        { price: 200 },
+        {},
+    ]))
+}
 
 function composeAPIResponse(responseString) {
     try {
@@ -36,8 +37,9 @@ function composeAPIResponse(responseString) {
     }
 }
 
-
 function printOrderTotal(order) {
+    if (!order) return;
+
     let total = 0;
     order.forEach(item => {
         total += item.price || 0
